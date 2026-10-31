@@ -11,11 +11,6 @@ export default defineConfig({
   build: {
     target: 'es2022',
     chunkSizeWarningLimit: 4000,
-    rollupOptions: {
-      output: {
-        manualChunks: { babylon: ['@babylonjs/core/Engines/engine'] },
-      },
-    },
   },
   test: {
     environment: 'node',
