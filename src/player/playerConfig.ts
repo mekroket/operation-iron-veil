@@ -26,6 +26,7 @@ export const PLAYER_CONFIG = {
   regenDelaySeconds: 6,
   regenPerSecond: 7,
 
+  deathRoll: 0.5,
   baseLookSpeed: 0.0021,
   maxPitch: 1.48,
 

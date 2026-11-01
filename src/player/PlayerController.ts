@@ -245,10 +245,14 @@ export class PlayerController implements IPlayerControl {
       this.eye.z - (bobX + shakeX) * sinYaw,
     );
 
-    // Lean slightly into strafes.
+    // Lean slightly into strafes, and topple on death. This must not go through rotation.z: whenever that changes,
+    // Babylon bakes the current pitch and yaw into upVector too, which leaves a permanent tilt once the view turns.
     const strafe = this.velocity.x * cosYaw - this.velocity.z * sinYaw;
-    this.roll = damp(this.roll, clamp(-strafe * 0.0028, -0.02, 0.02), 8, dt);
-    this.camera.rotation.set(-viewPitch, viewYaw, this.alive ? this.roll : 0.5);
+    const targetRoll = this.alive ? clamp(strafe * 0.0028, -0.02, 0.02) : C.deathRoll;
+    this.roll = damp(this.roll, targetRoll, this.alive ? 8 : 3, dt);
+    this.camera.rotation.set(-viewPitch, viewYaw, 0);
+    const sinRoll = Math.sin(this.roll);
+    this.camera.upVector.set(cosYaw * sinRoll, Math.cos(this.roll), -sinYaw * sinRoll);
 
     this.currentFov = damp(this.currentFov, this.targetFov(), C.fovChangeRate, dt || 1);
     this.camera.fov = this.currentFov;

@@ -30,6 +30,8 @@ export class CinematicPlayer {
   /** Starts from the first key, replacing whatever was playing. An empty list finishes at once. */
   play(keys: readonly CameraKey[], opts: CinematicOptions = {}): void {
     if (!this.active) this.savedFov = this.camera.fov;
+    // The first-person controller leaves its lean in upVector.
+    this.camera.upVector.set(0, 1, 0);
     this.keys = keys;
     this.options = opts;
     this.time = 0;

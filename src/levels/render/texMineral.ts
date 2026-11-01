@@ -15,19 +15,19 @@ export function asphalt(b: NoiseBank): MapSet {
       const speck = b.stones.id.at(x, y);
       // Tar seams only along some cell borders, so they read as repairs and not as a net.
       const seam = (1 - sstep(0, 0.02, b.crack.edge.at(x + 200, y + 90))) * sstep(0.42, 0.56, b.mid.at(x + 300, y + 170));
-      const wet = sstep(0.5, 0.64, large * 0.72 + mid * 0.28);
+      const wet = sstep(0.42, 0.78, large * 0.72 + mid * 0.28);
       const worn = sstep(0.55, 0.8, b.large.at(x + 512, y + 77));
 
       let t = mix(0.15, 0.25, stone * (0.35 + speck * 0.65)) * (0.84 + 0.32 * mid);
       if (speck > 0.93) t += stone * 0.16;
       t = mix(t, t * 1.2, worn);
-      t *= mix(1, 0.56, wet);
+      t *= mix(1, 0.72, wet);
       t = mix(t, 0.045, seam);
       p.r = t * 0.97;
       p.g = t * 0.985;
       p.b = t * 1.05;
       p.h = (stone * 0.0055 + fine * 0.001) * (1 - wet * 0.85) - seam * 0.003;
-      p.rough = mix(mix(0.93, 0.08, wet), 0.32, seam);
+      p.rough = mix(mix(0.93, 0.34, wet), 0.32, seam);
       p.ao = 1 - (1 - stone) * 0.25 * (1 - wet);
     },
     { normalBoost: 1.2 },
@@ -71,7 +71,7 @@ function concreteMaps(b: NoiseBank, look: ConcreteLook): MapSet {
 
       const stain = sstep(0.55, 0.85, streak * (0.55 + 0.65 * large));
       const salt = sstep(0.62, 0.82, b.mid.at(x + o * 9, y + 400)) * 0.5;
-      const wet = sstep(wetCut, wetCut + 0.12, large * 0.6 + mid * 0.4);
+      const wet = sstep(wetCut - 0.06, wetCut + 0.26, large * 0.6 + mid * 0.4);
       const pores = 1 - sstep(0.02, 0.14, b.stones.f1.at(x + o, y + o));
 
       let t = (0.78 + 0.32 * mid) * boardTone * (1 - stain * 0.38) + salt * 0.14;
@@ -84,7 +84,7 @@ function concreteMaps(b: NoiseBank, look: ConcreteLook): MapSet {
       let r = look.tone[0] * t;
       let g = look.tone[1] * t;
       let bl = look.tone[2] * t;
-      let rough = mix(0.88 + fine * 0.08, 0.2, wet);
+      let rough = mix(0.88 + fine * 0.08, 0.36, wet);
       let h = fine * 0.0012 + mid * 0.002 - pores * 0.0018 - (1 - board) * 0.005 - crack * 0.004 - tie * 0.008;
 
       if (look.paint) {
@@ -149,7 +149,7 @@ export function quayStone(b: NoiseBank): MapSet {
       const streak = b.streak.at(x + 150, y);
       const salt = sstep(0.6, 0.82, streak * 0.55 + b.mid.at(x + 77, y + 301) * 0.45);
       const algae = sstep(0.62, 0.8, b.large.at(x + 390, y + 210)) * (1 - salt);
-      const wet = sstep(0.5, 0.64, b.large.at(x + 21, y + 400) * 0.7 + mid * 0.3);
+      const wet = sstep(0.42, 0.78, b.large.at(x + 21, y + 400) * 0.7 + mid * 0.3);
 
       let t = mix(0.33, 0.47, id) * (0.82 + 0.36 * mid) * (1 - pit * 0.25);
       t *= mix(1, 0.6, wet);
@@ -168,7 +168,7 @@ export function quayStone(b: NoiseBank): MapSet {
       p.g = g;
       p.b = bl;
       p.h = chamfer * 0.012 + (large * 0.008 + mid * 0.006 + fine * 0.0015 - pit * 0.003) * chamfer * (1 - wet * 0.6);
-      p.rough = mix(mix(0.9, 0.14, wet), 0.95, seam);
+      p.rough = mix(mix(0.9, 0.34, wet), 0.95, seam);
       p.ao = 1 - seam * 0.7;
     },
     { normalBoost: 1.1 },
