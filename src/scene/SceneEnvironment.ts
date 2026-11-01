@@ -197,7 +197,7 @@ export class SceneEnvironment {
 
   private buildLights(): void {
     const hemi = new HemisphericLight('iv.ambient', Vector3.Up(), this.scene);
-    hemi.intensity = 0.3;
+    hemi.intensity = 0.42;
     hemi.diffuse.set(0.42, 0.52, 0.72);
     hemi.groundColor.set(0.1, 0.07, 0.05);
     hemi.specular.set(0, 0, 0);

@@ -12,7 +12,7 @@ export const LIGHT_COLORS: Record<LightKind, Color3> = {
   sodium: new Color3(1, 0.46, 0.13),
   fluorescent: new Color3(0.76, 0.89, 1),
   warning: new Color3(1, 0.6, 0.1),
-  emergency: new Color3(1, 0.07, 0.05),
+  emergency: new Color3(1, 0.16, 0.1),
   work: new Color3(1, 0.93, 0.8),
 };
 
@@ -22,9 +22,9 @@ export const LIGHT_COLORS: Record<LightKind, Color3> = {
  */
 const CANDELA_PER_RANGE2: Record<LightKind, number> = {
   sodium: 0.75,
-  fluorescent: 0.6,
+  fluorescent: 0.9,
   warning: 0.22,
-  emergency: 0.25,
+  emergency: 0.07,
   work: 0.45,
 };
 

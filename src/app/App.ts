@@ -247,6 +247,7 @@ export class App {
 
   private readonly onResize = (): void => {
     this.world?.engine.resize();
+    this.world?.graphics.onResize();
   };
 
   private onPlayerDied(): void {

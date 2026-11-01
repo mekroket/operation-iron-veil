@@ -158,7 +158,7 @@ const WARDEN: WeaponConfig = {
   moveSpeedMultiplier: 0.95,
   adsMoveMultiplier: 0.62,
   view: {
-    hipOffset: { x: 0.16, y: -0.135, z: 0.52 },
+    hipOffset: { x: 0.17, y: -0.16, z: 0.58 },
     adsOffset: { x: 0, y: -0.108, z: 0.2 },
     sprintOffset: { x: 0.02, y: -0.075, z: -0.05 },
     sprintRotation: { x: 0.42, y: -0.92, z: 0.3 },

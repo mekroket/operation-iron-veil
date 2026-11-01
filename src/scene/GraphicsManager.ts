@@ -13,6 +13,7 @@ import { AdaptiveResolution } from './adaptiveResolution';
 
 /** Above this device pixel ratio extra pixels cost far more than they show on a dark, grainy image. */
 const MAX_DEVICE_RATIO = 1.5;
+const MAX_RENDER_PIXELS = 1920 * 1080;
 const MSAA_HIGH = 4;
 
 /** Applies graphics settings live: resolution, post processing and adaptive resolution. */
@@ -21,6 +22,7 @@ export class GraphicsManager {
   private pipeline: DefaultRenderingPipeline | null = null;
   private ssao: SSAO2RenderingPipeline | null = null;
   private lastGraphicsJson = '';
+  private lastPreset: GameSettings['graphics']['preset'] = 'high';
   private readonly adaptive: AdaptiveResolution;
   private readonly unsubscribe: () => void;
 
@@ -74,6 +76,7 @@ export class GraphicsManager {
 
     const gfx = resolveGraphics(graphics);
     this.currentResolved = gfx;
+    this.lastPreset = graphics.preset;
     this.adaptive.configure(gfx.resolutionScale, graphics.adaptiveResolution);
     this.applyScale(this.adaptive.current);
 
@@ -87,9 +90,22 @@ export class GraphicsManager {
     this.configurePost(graphics.postQuality);
   }
 
+  /** The render-size cap depends on the window, so it must be recomputed when the window changes. */
+  onResize(): void {
+    this.applyScale(this.adaptive.current);
+  }
+
   private applyScale(scale: number): void {
-    const ratio = Math.min(window.devicePixelRatio || 1, MAX_DEVICE_RATIO);
+    const ratio = Math.min(window.devicePixelRatio || 1, MAX_DEVICE_RATIO, this.pixelCapRatio());
     this.engine.setHardwareScalingLevel(1 / (scale * ratio));
+  }
+
+  /** Ultra renders every pixel. Other presets stop at about 1080p, so a large or high-DPI screen doesn't halve the frame rate. */
+  private pixelCapRatio(): number {
+    if (this.lastPreset === 'ultra') return Number.POSITIVE_INFINITY;
+    const canvas = this.engine.getRenderingCanvas();
+    const area = (canvas?.clientWidth ?? window.innerWidth) * (canvas?.clientHeight ?? window.innerHeight);
+    return area > 0 ? Math.sqrt(MAX_RENDER_PIXELS / area) : 1;
   }
 
   /** Scene wide look. The post process reads this object, so it survives pipeline rebuilds. */
@@ -97,7 +113,7 @@ export class GraphicsManager {
     const config = this.scene.imageProcessingConfiguration;
     config.toneMappingEnabled = true;
     config.toneMappingType = ImageProcessingConfiguration.TONEMAPPING_ACES;
-    config.exposure = 1.25;
+    config.exposure = 1.55;
     config.contrast = 1.12;
 
     const curves = new ColorCurves();

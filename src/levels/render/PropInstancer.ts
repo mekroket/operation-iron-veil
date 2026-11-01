@@ -8,11 +8,13 @@ import { PROP_CATALOG } from '../propCatalog';
 import type { PropKind, PropSpec } from '../propCatalog';
 import type { PropPlacement } from '../types';
 import { freezeStatic, shareGeometry } from './Geo';
-import { BATCH_CELL_SIZE } from './GeometryBatcher';
 import type { MaterialLibrary, SurfaceKey } from './materialLibrary';
 import { NON_CASTING } from './materialLibrary';
 import { PROP_BUILDERS } from './props';
 import { PropBuild } from './props/propTypes';
+
+/** Wider than the terrain cells: each prop kind is its own draw call per cell, and props are the bulk of the draw count. */
+const PROP_CELL_SIZE = 56;
 
 interface ModelPart {
   surface: SurfaceKey;
@@ -42,8 +44,8 @@ export class PropInstancer {
     for (const prop of props) {
       const spec: PropSpec = PROP_CATALOG[prop.kind];
       const variant = Math.abs(Math.floor(prop.variant ?? 0)) % (spec.variants ?? 1);
-      const cellX = Math.floor(prop.position.x / BATCH_CELL_SIZE);
-      const cellZ = Math.floor(prop.position.z / BATCH_CELL_SIZE);
+      const cellX = Math.floor(prop.position.x / PROP_CELL_SIZE);
+      const cellZ = Math.floor(prop.position.z / PROP_CELL_SIZE);
       const name = `${prop.kind}.${variant}.${cellX}.${cellZ}`;
       let group = groups.get(name);
       if (!group) {
