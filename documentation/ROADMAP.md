@@ -1,25 +1,25 @@
 # Roadmap
 
-**Reconcile this list.** The owner's brief is not stored in this repo. The twelve phase titles below were reconstructed from the code and commit history, and need checking against the brief. The states are read from the code.
-
-**What the states mean.** "In code" means the system exists in `src/` and is wired into the game. It says nothing about how well it plays. "Pending" means the code does not contain it. Verification status lives in `documentation/QA.md` and `KNOWN_ISSUES.md`, which the lead maintains.
+**What the states mean.** "In code" means the system exists in `src/` and is wired into the game. It says nothing about how well it plays. Verification status lives in `documentation/QA.md` and `KNOWN_ISSUES.md`.
 
 ## Phases 0 to 11
 
+These are the phases from the owner's brief.
+
 | Phase | Scope | State | Evidence and gaps |
 |---|---|---|---|
-| 0 | Project setup, rules, specialists, docs | In code | `package.json`, `tsconfig.json`, `.stackblitzrc`, `.claude/agents/`, `documentation/`, `CLAUDE.md` |
-| 1 | Engine bootstrap and build pipeline | In code | `src/engine/bjs.ts`, `src/scene/rendererBootstrap.ts`, `.github/workflows/build-and-deploy.yml`. WebGPU is opt-in only |
-| 2 | Player controller and physics | In code, tuning pending | `src/player/`, `src/physics/`. No human tuning pass yet |
-| 3 | Weapons and combat | In code, tuning pending | `src/weapons/`, `src/combat/`. Three fictional weapons with data-driven tuning |
+| 0 | Environment and repository audit | Done | GitHub, cloud CI and WebGL2 checked. The session itself ran on the owner's PC, so nothing was installed there and the build runs in GitHub Actions |
+| 1 | Game design and architecture | Done | `documentation/GDD.md`, `documentation/ARCHITECTURE.md`, `src/core/contracts.ts`, `.claude/agents/` |
+| 2 | Playable first-person controller | In code, tuning pending | `src/player/`, `src/physics/`. No human tuning pass yet |
+| 3 | Weapon and combat systems | In code, tuning pending | `src/weapons/`, `src/combat/`. Three fictional weapons with data-driven tuning |
 | 4 | Enemy AI | In code, tuning pending | `src/ai/`, `src/enemies/`. Seven states, one archetype |
-| 5 | Level: Port Kessary | In code | `src/levels/silentBreakwater/`. Nine zones, 35 enemies, 12 trigger slices, 4 checkpoints |
-| 6 | World rendering and art | In code, procedural only | `src/scene/`, `src/levels/render/`. No GLB, no authored textures |
-| 7 | Characters and animation | In code, procedural only | `src/enemies/EnemyRig*.ts`, `src/weapons/ViewModelAnimator.ts`. No skinned characters, no player body |
-| 8 | VFX and audio | In code, synthesised only | `src/effects/`, `src/audio/`. No recorded voice |
-| 9 | UI and UX | In code, no generated art | `src/ui/`. Menus show the live port, with no key art |
-| 10 | Mission, story and save | In code | `src/missions/`, `src/save/`. One mission |
-| 11 | QA, performance and release | Partly in code | `tests/` has 10 Vitest files for pure modules. `src/app/debugApi.ts` is the browser test API. CI gates on typecheck, test and build. Presets and adaptive resolution exist. Human playtest and per-preset measurements are pending |
+| 5 | Greybox industrial port | Done | `src/levels/silentBreakwater/`. Nine zones, 35 enemies, 4 checkpoints |
+| 6 | Detailed environment and visual assets | In code, procedural only | `src/scene/`, `src/levels/render/`. No GLB, no authored textures |
+| 7 | HUD, menus and UI | In code, no generated art | `src/ui/`. Menus show the live port, with no key art |
+| 8 | Audio, effects and animations | In code, synthesised only | `src/audio/`, `src/effects/`, `src/enemies/EnemyRig*.ts`, `src/weapons/ViewModelAnimator.ts`. No recorded voice, no skinned characters |
+| 9 | Mission progression and cinematics | In code | `src/missions/`, `src/animations/`, `src/save/`. One mission, in-engine cinematics |
+| 10 | Performance optimisation and testing | Partly done | Presets, adaptive resolution and unit tests exist, and frame cost was measured. Real frame rate and a human playtest are pending |
+| 11 | Publish the browser-playable game | Done on GitHub Pages | `https://mekroket.github.io/operation-iron-veil/`. Cloudflare Pages not set up |
 
 The full integration landed in commit `c9e2e83`, and its message states it was not yet verified in a browser. Later commits record browser fixes, including `23d26c0`, `b0e48d1` and `cfff7ea`.
 

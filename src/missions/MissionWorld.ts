@@ -41,7 +41,7 @@ interface RestorablePlayer {
 }
 
 /** A checkpoint never saves the player with less than this share of their health, to avoid a death loop. */
-const CHECKPOINT_MIN_HEALTH_FRACTION = 0.5;
+const CHECKPOINT_MIN_HEALTH_FRACTION = 0.75;
 /** Level objective positions sit on the floor. The player aims at the screen, this far above it. */
 const TERMINAL_SCREEN_HEIGHT = 1.1;
 /** Eye reach beyond the extraction zone's own size. */

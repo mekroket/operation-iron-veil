@@ -9,7 +9,7 @@ These items of the version 0.1 definition of done could not be exercised in the 
 - **Real frame rate.** Frame cost was measured in a hidden pane; 60 fps at 1080p has not been observed.
 - **Audio by ear.** Signal levels were measured. Nobody has listened, so mix and sound quality are untuned.
 - **Human playtest.** No person has played this build. Mouse feel, difficulty and pacing are untested.
-- **Mission length.** A perfect-aim bot finishes in 194 s with no deaths. The 10 to 15 minute target is unconfirmed, and the mission may be too short or too easy for a person.
+- **Mission length and difficulty.** A perfect-aim bot that never takes cover finished in 194 s with no deaths on one run, and 371 s with 11 deaths in the warehouse on another. The 10 to 15 minute target is unconfirmed, and the warehouse may be a difficulty spike.
 - **WebGPU path (`?webgpu=1`).** Never run. WebGL2 is the tested path.
 - **Cloudflare Pages.** The static build should deploy there (relative base path), but it is deployed on GitHub Pages only.
 

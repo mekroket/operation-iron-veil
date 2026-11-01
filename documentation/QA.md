@@ -1,6 +1,6 @@
 # QA and test report: version 0.1
 
-Tested build: GitHub Pages deployment of commit `666e629` (`https://mekroket.github.io/operation-iron-veil/`).
+Tested build: GitHub Pages deployment (`https://mekroket.github.io/operation-iron-veil/`). The results below come from several builds during the fix cycle; the last game code change after the full run only raised the checkpoint health floor from 50% to 75%.
 Test browser: Chromium 152 in the Claude desktop app's built-in browser pane, Windows 11, Intel integrated graphics, WebGL2.
 
 ## How verification works
@@ -56,19 +56,21 @@ No human has played this build. "Scripted" does not establish how the game feels
 `documentation/qa-playthrough-bot.js` plays the whole mission using the real input path: no teleporting, no invulnerability, no enemy kills by script.
 It walks the navigation graph, aims with mouse events, fires, reloads, opens doors, uses the terminal and boards the boat.
 
-| Measure | Value |
-| --- | --- |
-| Result | Mission complete, grade S |
-| Enemies defeated | 35 of 35 |
-| Stuck events | 0 |
-| Deaths | 0 |
-| Damage taken | 98, partly recovered by regeneration |
-| Shots fired, hits | 342, 184 |
-| Enemy shots, hits | 157, 14 |
-| Simulated time | 194 s |
+Two complete runs, same bot, different outcomes because AI and aim scatter are random:
 
-The bot aims perfectly and never takes cover or plays stealthily, so 194 s is a lower bound and not the expected mission length.
-Whether a person takes the targeted 10 to 15 minutes is not verified.
+| Measure | Run 1 | Run 2 |
+| --- | --- | --- |
+| Result | Complete, grade S | Complete, grade B |
+| Enemies defeated | 35 of 35 | 35 of 35 |
+| Stuck events | 0 | 0 |
+| Deaths | 0 | 11, all in the main warehouse |
+| Damage taken | 98 | 697 |
+| Simulated time including retries | 194 s | 371 s |
+| Console errors | 0 | 0 |
+
+Run 2 also proves the death and restart-from-checkpoint loop over repeated use. Run 1 ran before the camera and ground material fixes; run 2 ran on the build with them.
+
+The bot aims perfectly but never takes cover or plays stealthily. Its time is a lower bound rather than the expected mission length, and its deaths say little about a person's. The swing between runs does suggest the warehouse fight, with 13 enemies in one open interior, may be the hardest spike in the mission. That needs a human playtest before any tuning, as does the 10 to 15 minute target.
 
 ## Frame cost
 
