@@ -61,6 +61,7 @@ export {
 export type { CharacterSurfaceInfo } from '@babylonjs/core/Physics/v2/characterController';
 export { PhysicsRaycastResult } from '@babylonjs/core/Physics/physicsRaycastResult';
 
+import '@babylonjs/core/Culling/ray';
 import { RegisterJoinedPhysicsEngineComponent } from '@babylonjs/core/Physics/joinedPhysicsEngineComponent';
 import { RegisterPhysicsV2PhysicsEngineComponent } from '@babylonjs/core/Physics/v2/physicsEngineComponent';
 import { RegisterBaseTexturePolynomial } from '@babylonjs/core/Materials/Textures/baseTexture.polynomial';

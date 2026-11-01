@@ -40,7 +40,6 @@ export function installDebugApi(app: App): void {
         defeated: session?.enemies.getDefeatedIds().length ?? 0,
         fps: world?.graphics.fps ?? 0,
         scale: world?.engine.getHardwareScalingLevel() ?? 0,
-        drawCalls: world?.engine._drawCalls.current ?? 0,
         activeMeshes: world?.scene.getActiveMeshes().length ?? 0,
         totalMeshes: world?.scene.meshes.length ?? 0,
         lights: world?.scene.lights.length ?? 0,
@@ -49,6 +48,15 @@ export function installDebugApi(app: App): void {
         pointerLocked: document.pointerLockElement !== null,
         errors: errors.slice(-10),
       };
+    },
+    /** Draw calls in one rendered frame. */
+    async drawCallsPerFrame(): Promise<number> {
+      const engine = app.gameWorld?.engine;
+      if (!engine) return 0;
+      await new Promise((resolve) => engine.scenes[0].onAfterRenderObservable.addOnce(resolve));
+      const before = engine._drawCalls.current;
+      await new Promise((resolve) => engine.scenes[0].onAfterRenderObservable.addOnce(resolve));
+      return engine._drawCalls.current - before;
     },
     /** Steps the simulation without rendering, for hidden tabs where animation frames are throttled. */
     tick(frames = 1, dt = 1 / 30): void {

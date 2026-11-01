@@ -5,6 +5,7 @@ import type { EventBus } from '../core/events';
 import { damp } from '../core/math';
 import type { MissionStats, Vec3 } from '../core/types';
 import { EffectsManager } from '../effects/EffectsManager';
+import { Vector3 } from '../engine/bjs';
 import { EnemyManager } from '../enemies/EnemyManager';
 import { DoorSystem } from '../interaction/DoorSystem';
 import { InteractionSystem } from '../interaction/InteractionSystem';
@@ -194,8 +195,7 @@ export class GameSession {
 
   private updateAudio(dt: number): void {
     const camera = this.world.camera;
-    const forward = camera.getForwardRay(1).direction;
-    this.audio.setListener(camera.position, forward);
+    this.audio.setListener(camera.position, camera.getDirection(Vector3.Forward()));
     this.interiorTimer -= dt;
     if (this.interiorTimer <= 0) {
       this.interiorTimer = INTERIOR_SAMPLE_SECONDS;

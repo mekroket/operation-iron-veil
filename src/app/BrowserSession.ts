@@ -49,15 +49,21 @@ export class BrowserSession {
     try {
       // Prefer raw mouse input. Not every platform supports it, so fall back on rejection.
       const request = this.canvas.requestPointerLock({ unadjustedMovement: true }) as unknown as Promise<void> | undefined;
-      request?.catch?.(() => {
+      request?.catch?.((rawError: unknown) => {
+        console.warn('[input] Raw pointer lock refused, trying standard lock.', rawError);
         try {
           const fallback = this.canvas.requestPointerLock() as unknown as Promise<void> | undefined;
-          fallback?.catch?.(() => this.events.onLockError());
-        } catch {
+          fallback?.catch?.((error: unknown) => {
+            console.warn('[input] Pointer lock refused.', error);
+            this.events.onLockError();
+          });
+        } catch (error) {
+          console.warn('[input] Pointer lock refused.', error);
           this.events.onLockError();
         }
       });
-    } catch {
+    } catch (error) {
+      console.warn('[input] Pointer lock refused.', error);
       this.events.onLockError();
     }
   }
@@ -81,7 +87,10 @@ export class BrowserSession {
       this.events.onFullscreenError();
       return;
     }
-    root.requestFullscreen({ navigationUI: 'hide' }).catch(() => this.events.onFullscreenError());
+    root.requestFullscreen({ navigationUI: 'hide' }).catch((error: unknown) => {
+      console.warn('[display] Fullscreen refused.', error);
+      this.events.onFullscreenError();
+    });
   }
 
   private readonly onPointerLockChange = (): void => {
