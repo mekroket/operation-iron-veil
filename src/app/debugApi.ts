@@ -40,7 +40,7 @@ export function installDebugApi(app: App): void {
         defeated: session?.enemies.getDefeatedIds().length ?? 0,
         fps: world?.graphics.fps ?? 0,
         scale: world?.engine.getHardwareScalingLevel() ?? 0,
-        drawCalls: world?.engine.drawCalls ?? 0,
+        drawCalls: world?.engine._drawCalls.current ?? 0,
         activeMeshes: world?.scene.getActiveMeshes().length ?? 0,
         totalMeshes: world?.scene.meshes.length ?? 0,
         lights: world?.scene.lights.length ?? 0,

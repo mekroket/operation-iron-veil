@@ -52,7 +52,7 @@ export class GameSession {
 
   constructor(
     private readonly world: GameWorld,
-    private readonly bus: EventBus,
+    bus: EventBus,
     settings: SettingsStore,
     save: SaveStore,
     private readonly audio: AudioDirector,
