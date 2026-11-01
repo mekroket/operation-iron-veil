@@ -8,6 +8,7 @@ const GROUND_STICK_SPEED = -1;
 const MAX_FALL_SPEED = -40;
 const MIN_STEP = 1 / 240;
 const SURFACE_SAMPLE_SECONDS = 0.25;
+const STEP_EDGE_SLOPE_COSINE = 0.1;
 
 export interface CharacterWorldQueries {
   surfaceBelow(feet: Vec3): SurfaceType | null;
@@ -43,8 +44,11 @@ export class CharacterBody implements ICharacterBody {
     this.controller.keepDistance = 0.02;
     this.controller.keepContactTolerance = 0.05;
     this.controller.maxCharacterSpeedForSolver = 45;
-    this.controller.maxStepHeight = 0.35;
-    this.controller.maxSlopeCosine = Math.cos((50 * Math.PI) / 180);
+    // Babylon's step-up sweep only succeeds when one frame's travel is long enough for the rounded capsule bottom to
+    // land flat, so it fails at 60 fps and above. The level has no slopes, only boxes, so a permissive slope limit
+    // lets the capsule roll up any edge below about 0.3 m at every frame rate, while vertical walls still block.
+    this.controller.maxStepHeight = 0;
+    this.controller.maxSlopeCosine = STEP_EDGE_SLOPE_COSINE;
     this.syncPosition();
   }
 
