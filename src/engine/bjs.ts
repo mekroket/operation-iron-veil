@@ -34,6 +34,8 @@ export { Texture } from '@babylonjs/core/Materials/Textures/texture';
 export { BaseTexture } from '@babylonjs/core/Materials/Textures/baseTexture';
 export { DynamicTexture } from '@babylonjs/core/Materials/Textures/dynamicTexture';
 export { RawTexture } from '@babylonjs/core/Materials/Textures/rawTexture';
+export { RawCubeTexture } from '@babylonjs/core/Materials/Textures/rawCubeTexture';
+export { CubeMapToSphericalPolynomialTools } from '@babylonjs/core/Misc/HighDynamicRange/cubemapToSphericalPolynomial';
 export { ReflectionProbe } from '@babylonjs/core/Probes/reflectionProbe';
 
 export { ParticleSystem } from '@babylonjs/core/Particles/particleSystem';
@@ -61,6 +63,7 @@ export { PhysicsRaycastResult } from '@babylonjs/core/Physics/physicsRaycastResu
 
 import { RegisterJoinedPhysicsEngineComponent } from '@babylonjs/core/Physics/joinedPhysicsEngineComponent';
 import { RegisterPhysicsV2PhysicsEngineComponent } from '@babylonjs/core/Physics/v2/physicsEngineComponent';
+import { RegisterBaseTexturePolynomial } from '@babylonjs/core/Materials/Textures/baseTexture.polynomial';
 import { RegisterThinInstanceMesh } from '@babylonjs/core/Meshes/thinInstanceMesh';
 import { RegisterParticleSystemComponent } from '@babylonjs/core/Particles/particleSystemComponent';
 import { RegisterPostProcessRenderPipelineManagerSceneComponent } from '@babylonjs/core/PostProcesses/RenderPipeline/postProcessRenderPipelineManagerSceneComponent';
@@ -72,6 +75,7 @@ import { DepthRenderer } from '@babylonjs/core/Rendering/depthRenderer';
 
 RegisterJoinedPhysicsEngineComponent();
 RegisterPhysicsV2PhysicsEngineComponent();
+RegisterBaseTexturePolynomial();
 RegisterThinInstanceMesh();
 RegisterParticleSystemComponent();
 RegisterPostProcessRenderPipelineManagerSceneComponent(PostProcessRenderPipelineManager);

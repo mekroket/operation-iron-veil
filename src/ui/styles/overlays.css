@@ -1,0 +1,178 @@
+/* Letterbox, resume prompt, loading, FPS and notices. */
+
+.iv-letterbox {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transition: visibility 0s linear var(--medium);
+}
+
+.iv-letterbox.is-active {
+  visibility: visible;
+  transition: visibility 0s;
+}
+
+.iv-letterbox__bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: block;
+  height: 11vh;
+  background: #000;
+  transition: transform 420ms var(--ease);
+}
+
+.iv-letterbox__bar--top {
+  top: 0;
+  transform: translateY(-100%);
+}
+
+.iv-letterbox__bar--bottom {
+  bottom: 0;
+  transform: translateY(100%);
+}
+
+.iv-letterbox.is-active .iv-letterbox__bar {
+  transform: none;
+}
+
+.iv-letterbox__skip {
+  position: absolute;
+  right: var(--space-6);
+  bottom: 3.5vh;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-2);
+  color: var(--text-dim);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: var(--tracking);
+  pointer-events: auto;
+  transition: color var(--fast) var(--ease);
+  animation: iv-fade 400ms ease-out 400ms both;
+}
+
+.iv-letterbox__skip:hover {
+  color: var(--text);
+}
+
+.iv-resume {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background: rgba(5, 7, 9, 0.55);
+  pointer-events: auto;
+  animation: iv-fade var(--fast) linear both;
+}
+
+.iv-ui .iv-resume:focus-visible {
+  outline: none;
+}
+
+.iv-resume__label {
+  padding: var(--space-3) var(--space-7);
+  border-top: 1px solid var(--accent);
+  border-bottom: 1px solid var(--accent);
+  background: var(--panel);
+  color: var(--text);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  letter-spacing: var(--tracking-wide);
+  transition: color var(--fast) var(--ease);
+}
+
+.iv-resume:hover .iv-resume__label,
+.iv-resume:focus-visible .iv-resume__label {
+  color: var(--accent-bright);
+}
+
+.iv-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  background: #07090b;
+  pointer-events: auto;
+}
+
+.iv-loading__column {
+  width: min(calc(var(--u) * 90), 70vw);
+  margin-left: var(--space-8);
+}
+
+.iv-loading__status {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-top: var(--space-7);
+  margin-bottom: var(--space-1);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+}
+
+.iv-loading__label {
+  color: var(--text-dim);
+}
+
+.iv-loading__percent {
+  color: var(--accent-bright);
+}
+
+.iv-loading__track {
+  height: 1px;
+  background: var(--hairline);
+}
+
+.iv-loading__fill {
+  height: 100%;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--medium) linear;
+}
+
+.iv-loading__tip-block {
+  min-height: calc(var(--u) * 11);
+  margin-top: var(--space-5);
+}
+
+.iv-loading__tip {
+  color: var(--text-dim);
+  font-size: var(--text-md);
+}
+
+.iv-fps {
+  position: absolute;
+  right: var(--space-3);
+  top: var(--space-2);
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
+}
+
+.iv-notice {
+  position: absolute;
+  left: 50%;
+  top: var(--space-6);
+  max-width: min(calc(var(--u) * 90), 70vw);
+  padding: var(--space-2) var(--space-4);
+  border-left: 2px solid var(--accent);
+  background: var(--panel);
+  color: var(--text);
+  font-size: var(--text-sm);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%);
+  transition: opacity var(--medium) var(--ease);
+}
+
+.iv-notice.is-visible {
+  opacity: 1;
+}

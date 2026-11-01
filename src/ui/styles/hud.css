@@ -1,0 +1,122 @@
+/* In-game overlay. Never takes pointer events, so the canvas keeps the mouse. */
+
+.iv-hud {
+  --hud-margin: calc(var(--u) * 4);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  visibility: hidden;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
+}
+
+.iv-hud[data-mode='play'] {
+  visibility: visible;
+}
+
+/* During a cinematic only the radio captions stay on screen. */
+.iv-hud[data-mode='cinematic'] .iv-radio {
+  visibility: visible;
+}
+
+/* Crosshair and hit marker hang from a zero-size point at screen centre. */
+.iv-crosshair {
+  --gap: 6px;
+  --len: calc(var(--u) * 1.2);
+  --thick: max(1.5px, calc(var(--u) * 0.2));
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  transition: opacity 90ms linear;
+}
+
+.iv-crosshair.is-ads {
+  opacity: 0;
+}
+
+.iv-crosshair__tick {
+  position: absolute;
+  left: calc(var(--thick) / -2);
+  top: calc(var(--len) / -2);
+  width: var(--thick);
+  height: var(--len);
+  background: rgba(240, 238, 230, 0.92);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.9);
+  transform: rotate(var(--angle)) translateY(calc(var(--gap) * -1 - var(--len) / 2));
+}
+
+.iv-crosshair__tick--up {
+  --angle: 0deg;
+}
+
+.iv-crosshair__tick--right {
+  --angle: 90deg;
+}
+
+.iv-crosshair__tick--down {
+  --angle: 180deg;
+}
+
+.iv-crosshair__tick--left {
+  --angle: 270deg;
+}
+
+.iv-crosshair__dot {
+  position: absolute;
+  left: -1px;
+  top: -1px;
+  width: 2px;
+  height: 2px;
+  background: rgba(240, 238, 230, 0.8);
+}
+
+.iv-hitmarker {
+  --len: calc(var(--u) * 1.5);
+  --thick: max(1.5px, calc(var(--u) * 0.22));
+  --reach: calc(var(--u) * 2.2);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  color: #f4f2ea;
+}
+
+.iv-hitmarker.is-head {
+  color: var(--accent-bright);
+}
+
+.iv-hitmarker.is-kill {
+  --len: calc(var(--u) * 2);
+  --thick: max(2px, calc(var(--u) * 0.32));
+  color: var(--danger);
+}
+
+.iv-hitmarker__line {
+  position: absolute;
+  left: calc(var(--thick) / -2);
+  top: calc(var(--len) / -2);
+  width: var(--thick);
+  height: var(--len);
+  background: currentColor;
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.9);
+  transform: rotate(var(--angle)) translateY(calc(var(--reach) * -1));
+}
+
+.iv-hitmarker__line--a {
+  --angle: 45deg;
+}
+
+.iv-hitmarker__line--b {
+  --angle: 135deg;
+}
+
+.iv-hitmarker__line--c {
+  --angle: 225deg;
+}
+
+.iv-hitmarker__line--d {
+  --angle: 315deg;
+}
