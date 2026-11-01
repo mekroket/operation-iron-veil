@@ -87,7 +87,8 @@ export function resolveGraphics(g: GameSettings['graphics']): ResolvedGraphics {
     shadowDistance: g.shadowQuality === 'high' ? 90 : 60,
     textureSize: { low: 256, medium: 512, high: 1024 }[g.textureQuality],
     bloom: g.postQuality !== 'off',
-    ssao: g.postQuality === 'high',
+    // SSAO redraws the whole scene into a geometry buffer, doubling draw calls, so it is reserved for Ultra.
+    ssao: ultra && g.postQuality === 'high',
     fxaa: g.postQuality !== 'off',
     grain: g.postQuality === 'high',
     maxLights: { off: 3, low: 3, medium: 4, high: ultra ? 8 : 6 }[g.postQuality],

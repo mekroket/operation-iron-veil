@@ -62,6 +62,11 @@ export class EnemyManager implements IEnemyDirector, EnemySquad {
     return this.hitTargets.length;
   }
 
+  /** Shared source meshes, which is where every enemy instance gets its lights from. */
+  get lightReceivers(): readonly AbstractMesh[] {
+    return this.assets.sourceMeshes;
+  }
+
   /** Body parts of every spawned enemy, corpses included. */
   get shadowCasters(): readonly AbstractMesh[] {
     return this.enemies.flatMap((enemy) => [...enemy.meshes]);

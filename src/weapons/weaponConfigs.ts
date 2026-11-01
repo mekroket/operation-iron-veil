@@ -158,7 +158,7 @@ const WARDEN: WeaponConfig = {
   moveSpeedMultiplier: 0.95,
   adsMoveMultiplier: 0.62,
   view: {
-    hipOffset: { x: 0.14, y: -0.12, z: 0.42 },
+    hipOffset: { x: 0.16, y: -0.135, z: 0.52 },
     adsOffset: { x: 0, y: -0.108, z: 0.2 },
     sprintOffset: { x: 0.02, y: -0.075, z: -0.05 },
     sprintRotation: { x: 0.42, y: -0.92, z: 0.3 },
@@ -225,7 +225,7 @@ const HORNET: WeaponConfig = {
   moveSpeedMultiplier: 1,
   adsMoveMultiplier: 0.74,
   view: {
-    hipOffset: { x: 0.125, y: -0.115, z: 0.38 },
+    hipOffset: { x: 0.145, y: -0.125, z: 0.46 },
     adsOffset: { x: 0, y: -0.085, z: 0.2 },
     sprintOffset: { x: 0.015, y: -0.07, z: -0.04 },
     sprintRotation: { x: 0.36, y: -0.8, z: 0.42 },

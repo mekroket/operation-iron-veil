@@ -130,6 +130,11 @@ export class EnemyRigAssets {
     this.source('rifleMag', gear, [this.box(0.03, 0.16, 0.055, { y: -0.07, z: 0.015, rx: -0.22 })]);
   }
 
+  /** Instances take their lights from these, so level lights must be assigned here rather than per enemy. */
+  get sourceMeshes(): Mesh[] {
+    return [...this.sources.values()];
+  }
+
   /** Creates an invisible-source instance of a part. The caller owns and disposes the instance. */
   instance(part: RigPart, name: string): InstancedMesh {
     const source = this.sources.get(part);

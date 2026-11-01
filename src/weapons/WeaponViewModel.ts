@@ -1,6 +1,6 @@
 /** First-person gun and arms: Babylon meshes built from the pure geometry in gunModels.ts. */
 import { Color3, Mesh, PBRMaterial, StandardMaterial, TransformNode, VertexData } from '../engine/bjs';
-import type { FreeCamera, Material, Scene, Vector3 } from '../engine/bjs';
+import type { AbstractMesh, FreeCamera, Material, Scene, Vector3 } from '../engine/bjs';
 import type { Vec3 } from '../core/types';
 import type { GeometryBatch } from './gunGeometry';
 import { buildGunGeometry } from './gunModels';
@@ -111,6 +111,10 @@ export class WeaponViewModel {
 
   setVisible(visible: boolean): void {
     this.root.setEnabled(visible);
+  }
+
+  get meshes(): AbstractMesh[] {
+    return this.root.getChildMeshes();
   }
 
   /**

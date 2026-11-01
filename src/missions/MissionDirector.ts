@@ -144,6 +144,12 @@ export class MissionDirector {
     return this.tracker.current();
   }
 
+  /** The player skipped the extraction cinematic: cut the closing radio and go straight to the results. */
+  skipOutro(): void {
+    this.cues.radio.clear();
+    this.outroLeft = 0;
+  }
+
   dispose(): void {
     for (const cleanup of this.cleanups) cleanup();
     this.cleanups.length = 0;

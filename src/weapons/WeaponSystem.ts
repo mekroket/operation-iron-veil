@@ -7,6 +7,7 @@ import type {
   WeaponSaveState,
 } from '../core/contracts';
 import { approach, lerp, saturate } from '../core/math';
+import type { AbstractMesh } from '../engine/bjs';
 import type { Vec3 } from '../core/types';
 import { spreadDirection } from '../combat/hitscan';
 import type { WorldRaycast } from '../combat/hitscan';
@@ -66,6 +67,11 @@ export class WeaponSystem implements IWeaponDirector {
   }
 
   /** Half-angle of the shot cone right now, radians. For the crosshair. */
+  /** Every view model mesh, for the level's light assignment. */
+  get lightReceivers(): AbstractMesh[] {
+    return this.models.flatMap((model) => model.meshes);
+  }
+
   get currentSpread(): number {
     return this.spread;
   }

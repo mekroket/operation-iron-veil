@@ -97,6 +97,13 @@ export class GameSession {
     this.effects = new EffectsManager(scene, bus, resolveGraphics(settings.get().graphics));
     this.cinematic = new CinematicPlayer(camera);
 
+    // Enemy instances share source meshes and the gun follows the camera: both use the lights around the player.
+    const lit = [...this.enemies.lightReceivers, ...this.weapons.lightReceivers];
+    for (const mesh of lit) visuals.addDynamicMesh(mesh, () => this.player.position);
+    this.cleanups.push(() => {
+      for (const mesh of lit) visuals.removeDynamicMesh(mesh);
+    });
+
     this.mission.onBoarded = () => this.startExtraction();
     this.mission.onComplete = (stats) => this.finish(stats);
     this.cleanups.push(bus.on('player:died', () => this.hooks.onDied()));
@@ -122,7 +129,7 @@ export class GameSession {
       this.cinematic.stop();
       this.endIntro();
     } else if (this.phase === 'extracting') {
-      this.cinematic.stop();
+      this.mission.skipOutro();
     }
   }
 
@@ -182,6 +189,7 @@ export class GameSession {
 
   private finish(stats: MissionStats): void {
     this.cinematic.stop();
+    this.ui.setCinematic(false);
     this.hooks.onComplete(stats);
   }
 

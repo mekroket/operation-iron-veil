@@ -4,6 +4,7 @@
  */
 import { Color3, Light, PointLight, SpotLight, Vector3 } from '../../engine/bjs';
 import type { AbstractMesh, Scene } from '../../engine/bjs';
+import type { Vec3 } from '../../core/types';
 import type { ResolvedGraphics } from '../../settings/settings';
 import type { LightDef, LightKind } from '../types';
 
@@ -61,6 +62,7 @@ interface RigLight {
 interface Tracked {
   mesh: AbstractMesh;
   lights: RigLight[];
+  anchor?: () => Vec3;
 }
 
 export class LightRig {
@@ -118,9 +120,12 @@ export class LightRig {
     }
   }
 
-  /** Keeps a moving mesh lit by whichever lights are closest to it. Re-evaluated a couple of times per second. */
-  track(mesh: AbstractMesh): void {
-    const entry: Tracked = { mesh, lights: [] };
+  /**
+   * Keeps a moving mesh lit by whichever lights are closest to it. Re-evaluated a couple of times per second.
+   * `anchor` replaces the mesh's own bounds, for source meshes of instances, whose transform means nothing.
+   */
+  track(mesh: AbstractMesh, anchor?: () => Vec3): void {
+    const entry: Tracked = { mesh, lights: [], anchor };
     this.tracked.push(entry);
     this.refresh(entry);
   }
@@ -160,7 +165,7 @@ export class LightRig {
   }
 
   private refresh(entry: Tracked): void {
-    const next = this.pick(entry.mesh);
+    const next = this.pick(entry.mesh, entry.anchor?.());
     if (next.length === entry.lights.length && next.every((rig) => entry.lights.includes(rig))) return;
     this.apply(entry, next);
   }
@@ -187,12 +192,19 @@ export class LightRig {
   }
 
   /** The most relevant lights for this mesh's bounds, at most `slots` of them. */
-  private pick(mesh: AbstractMesh): RigLight[] {
+  private pick(mesh: AbstractMesh, anchor?: Vec3): RigLight[] {
     if (this.slots === 0) return [];
-    mesh.computeWorldMatrix(true);
-    const box = mesh.getBoundingInfo().boundingBox;
-    const min = box.minimumWorld;
-    const max = box.maximumWorld;
+    let min: Vec3;
+    let max: Vec3;
+    if (anchor) {
+      min = anchor;
+      max = anchor;
+    } else {
+      mesh.computeWorldMatrix(true);
+      const box = mesh.getBoundingInfo().boundingBox;
+      min = box.minimumWorld;
+      max = box.maximumWorld;
+    }
     const scored: { rig: RigLight; score: number }[] = [];
     for (const rig of this.lights) {
       const p = rig.def.position;

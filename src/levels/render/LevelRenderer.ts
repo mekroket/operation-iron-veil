@@ -4,6 +4,7 @@
  */
 import type { AbstractMesh, Mesh, Scene } from '../../engine/bjs';
 import type { ILevelVisuals } from '../../core/contracts';
+import type { Vec3 } from '../../core/types';
 import type { ResolvedGraphics } from '../../settings/settings';
 import type { LevelDefinition, PropPlacement } from '../types';
 import { DoorVisuals } from './DoorVisuals';
@@ -94,8 +95,8 @@ export class LevelRenderer implements ILevelVisuals {
    * Level lights only reach meshes assigned to them, so anything moving (enemies, for example) must register here to
    * be lit by sodium and interior fixtures. Otherwise it receives just the sun and the sky.
    */
-  addDynamicMesh(mesh: AbstractMesh): void {
-    this.rig?.track(mesh);
+  addDynamicMesh(mesh: AbstractMesh, anchor?: () => Vec3): void {
+    this.rig?.track(mesh, anchor);
   }
 
   removeDynamicMesh(mesh: AbstractMesh): void {

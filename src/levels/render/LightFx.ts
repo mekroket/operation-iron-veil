@@ -165,7 +165,7 @@ export class LightFx {
     }
 
     this.emit(starGeo(), flares, 'flare', glow, (k) => FLARE_ALPHA[k]);
-    this.emit(coneGeo(), cones, 'cone', haze, () => 0.07);
+    this.emit(coneGeo(), cones, 'cone', haze, () => 0.04);
     this.emit(floorGeo(), pools, 'pool', glow, () => 0.2);
   }
 
@@ -202,7 +202,9 @@ export class LightFx {
     for (const [kind, matrices] of groups) {
       const mesh = new Mesh(`fx.${label}.${kind}`, this.scene);
       source.geometry?.applyToMesh(mesh);
-      const material = createAdditiveMaterial(this.scene, `fx.${label}.${kind}`, LIGHT_COLORS[kind], texture, alpha(kind));
+      // Saturated orange at this low alpha grades to red in the dark, so haze uses a paler tint of the light.
+      const color = label === 'cone' ? Color3.Lerp(LIGHT_COLORS[kind], Color3.White(), 0.3) : LIGHT_COLORS[kind];
+      const material = createAdditiveMaterial(this.scene, `fx.${label}.${kind}`, color, texture, alpha(kind));
       if (label === 'pool') material.zOffset = -2;
       mesh.material = material;
       mesh.useVertexColors = false;
